@@ -21,3 +21,6 @@ Route::get('/iphone', function () {
 Route::get('/todos', [ToDoController::class, 'index']);
 
 Route::get('/diaries', [DiaryController::class, 'index']);
+
+Route::get('/todos/{t}', [ToDoController::class, 'show']);
+

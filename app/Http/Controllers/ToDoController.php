@@ -17,8 +17,18 @@ class ToDoController extends Controller
     public function create() {
         return view("todos.create");
     }
-    public function store(ToDo $todo) {
-        dd("Metode store izsaukta");
-        return view("todos.store", compact("todo"));
+    public function store(Request $request){
+        $validated = $request->validate([
+            "content" => ["required", "max:255"]
+          ]);
+        ToDo::create([
+            "content" => $validated["content"],
+            "completed" => false
+        ]);
+        return redirect("/todos");
     }
+    public function edit(ToDo $todos){
+    return view('todos.edit', compact('todos'));
+}
+
 }

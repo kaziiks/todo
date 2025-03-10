@@ -18,13 +18,7 @@ Route::get('/iphone', function () {
     return view('iphone');
 });
 
-Route::get('/todos', [ToDoController::class, 'index']);
-
-Route::get('/diaries', [DiaryController::class, 'index']);
-
-Route::get('/todos/create', [ToDoController::class, 'create']);
-
-Route::post('/todos/store', [ToDoController::class, 'store']);
 
 
-Route::get('/todos/{t}', [ToDoController::class, 'show']);
+Route::resource("/todos", ToDoController::class);
+Route::resource("/diaries", DiaryController::class);

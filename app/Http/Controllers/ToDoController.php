@@ -27,7 +27,15 @@ class ToDoController extends Controller
         ]);
         return redirect("/todos");
     }
-    public function edit(ToDo $todos){
+    public function edit(Request $request,ToDo $todo){
+    $request->validate([
+        'title' => 'required|string|max:255',
+    ]);
+    $todo->content = $request->input('title');
+    $todo->save();
+    return rederect()->route('todos.show', $todo->id)->with('sucess', 'ToDo updated sucessefuly');
+}
+public function update(ToDo $todos){
     return view('todos.edit', compact('todos'));
 }
 

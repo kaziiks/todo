@@ -3,7 +3,7 @@
     <h1>redigesana</h1>
     <form method="POST" action="/todos/{{ $todos->id }}">
     @csrf
-    @method('POST')
+    @method('PUT')
     <label for="content">Saturs:</label>
   <input type="text" name="title" value="{{ $todos->content }}"/>
   <input type="submit" value="rediget"/><br><br>

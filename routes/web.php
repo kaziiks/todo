@@ -2,29 +2,32 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\ToDoController;
-use App\Http\Controllers\DiaryController;
+// Viesu maršruti
+Route::middleware('guest')->group(function () {
+    Route::get('/', function () {
+        return view('welcome'); // Welcome skats viesiem
+    })->name('welcome');
 
+    Route::get('/register', [App\Http\Controllers\RegisterController::class, 'create'])->name('register');
+    Route::post('/register', [App\Http\Controllers\RegisterController::class, 'store'])->name('register');
 
-Route::get('/', function () {
-    return view('welcome');
+    Route::get('/login', [App\Http\Controllers\SessionController::class, 'create'])->name('login');
+    Route::post('/login', [App\Http\Controllers\SessionController::class, 'store'])->name('login');
 });
 
-Route::get('/why', function () {
-    return view('why');
+// Pieteikušos lietotāju maršruti
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [App\Http\Controllers\SessionController::class, 'destroy'])->name('logout');
+
+    // Uzdevumu maršruti
+    Route::get('/todos', [App\Http\Controllers\ToDoController::class, 'index'])->name('todos.index');
+    Route::get('/todos/create', [App\Http\Controllers\ToDoController::class, 'create'])->name('todos.create');
+    Route::post('/todos', [App\Http\Controllers\ToDoController::class, 'store'])->name('todos.store');
+    Route::get('/todos/{todo}', [App\Http\Controllers\ToDoController::class, 'show'])->name('todos.show');
+    Route::get('/todos/{todo}/edit', [App\Http\Controllers\ToDoController::class, 'edit'])->name('todos.edit');
+    Route::put('/todos/{todo}', [App\Http\Controllers\ToDoController::class, 'update'])->name('todos.update');
+    Route::delete('/todos/{todo}', [App\Http\Controllers\ToDoController::class, 'destroy'])->name('todos.destroy');
+
+    // Dienasgrāmatas maršruti
+    Route::resource('/diaries', App\Http\Controllers\DiaryController::class);
 });
-
-Route::get('/iphone', function () {
-    return view('iphone');
-});
-
-Route::get('/todos', [ToDoController::class, 'index'])->name('todos.index');
-Route::get('/todos/create', [ToDoController::class, 'create'])->name('todos.create');
-Route::post('/todos', [ToDoController::class, 'store'])->name('todos.store');
-Route::get('/todos/{todo}', [ToDoController::class, 'show'])->name('todos.show');
-Route::get('/todos/{todos}/edit', [ToDoController::class, 'edit'])->name('todos.edit');
-Route::put('/todos/{todo}', [ToDoController::class, 'update'])->name('todos.update');
-// Route::delete('/todos/{todo}', [ToDoController::class, 'destroy'])->name('todos.destroy');
-
-// Route::resource("/todos", ToDoController::class);
-Route::resource("/diaries", DiaryController::class);
